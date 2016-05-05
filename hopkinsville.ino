@@ -56,10 +56,12 @@ Task nextEditableDebounce(NAV_POLL_TIME, -1, &nextEditableDebounceCallback, &sch
 Task previousEditable(NAV_POLL_TIME, -1, &previousEditableCallback, &scheduler, true);
 Task previousEditableDebounce(NAV_POLL_TIME, -1, &previousEditableDebounceCallback, &scheduler, false);
 
-NavigationItem rootNote(0, 0, 11, clearTwoSpaces, &navigation, &notePrinterCallback);
-NavigationItem rootRange(0, 2, 7, clearOneSpace, &navigation, &rangePrinterCallback);
-NavigationItem rootMode(0, 3, 6, clearOneSpace, &navigation, &modePrinterCallback);
-NavigationItem arpeggiatorModeStep1(0, 4, 5, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
+NavigationItem rootNote(0, 0, 11, 0, clearTwoSpaces, &navigation, &notePrinterCallback);
+NavigationItem rootRange(0, 2, 7, 5, clearOneSpace, &navigation, &rangePrinterCallback);
+NavigationItem rootMode(0, 3, 6, 0, clearOneSpace, &navigation, &modePrinterCallback);
+NavigationItem arpeggiatorModeStep1(0, 5, 5, 1, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
+NavigationItem arpeggiatorDegreeStep1(0, 6, 11, 1, clearTwoSpaces, &navigation, &rangePrinterCallback); 
+
 
 /** Print a note name given a value
  *  @param value - the current value

@@ -156,6 +156,11 @@ SOFTWARE. */
   void encoderDebounceCallback();
   void updateEditableCallback();
   void clearEditableCallback();
+  void nextEditableCallback();
+  void nextEditableDebounceCallback();
+  void previousEditableCallback();
+  void previousEditableDebounceCallback();
+
   void notePrinterCallback(int value);
   void modePrinterCallback(int value);
   void arpeggiatorModePrinterCallback(int value);
@@ -167,7 +172,7 @@ SOFTWARE. */
   char clearOneSpace[] = " "; 
   char clearTwoSpaces[] = "  ";
   const char* noteName[] = {NOTE_CHAR_A, NOTE_CHAR_Bb, NOTE_CHAR_B, NOTE_CHAR_C, NOTE_CHAR_Db, NOTE_CHAR_D, NOTE_CHAR_Eb, NOTE_CHAR_E, NOTE_CHAR_F, NOTE_CHAR_Gb, NOTE_CHAR_G, NOTE_CHAR_Ab};
-  const char* modeName[] = {MODE_CHAR_MAJOR, MODE_CHAR_MINOR, MODE_CHAR_DORIAN, MODE_CHAR_PHRYGIAN, MODE_CHAR_LYDIAN, MODE_CHAR_MIXOLYDIAN, MODE_CHAR_LOCRIAN}; 
+  const char* modeName[] = {MODE_CHAR_MAJOR, MODE_CHAR_MINOR, MODE_CHAR_DORIAN, MODE_CHAR_PHRYGIAN, MODE_CHAR_LYDIAN, MODE_CHAR_MIXOLYDIAN, MODE_CHAR_LOCRIAN};
   
   //LCD Icons
   byte rootInverted[8] = {

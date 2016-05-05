@@ -8,7 +8,7 @@
     friend class Navigation;
 
     public:
-      NavigationItem(int lcdRow, int lcdColumn, int rangeMax, char* clearChar, Navigation* navigation, void (*lcdPrinterCallback)(int));
+      NavigationItem(int lcdRow, int lcdColumn, int rangeMax, int value, char* clearChar, Navigation* navigation, void (*lcdPrinterCallback)(int));
       
       void setNextNavigationItem(NavigationItem* next);
       void setPreviousNavigationItem(NavigationItem* previous);
