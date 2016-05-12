@@ -55,19 +55,27 @@ Task nextEditable(NAV_POLL_TIME, -1, &nextEditableCallback, &scheduler, true);
 Task nextEditableDebounce(NAV_POLL_TIME, -1, &nextEditableDebounceCallback, &scheduler, false);
 Task previousEditable(NAV_POLL_TIME, -1, &previousEditableCallback, &scheduler, true);
 Task previousEditableDebounce(NAV_POLL_TIME, -1, &previousEditableDebounceCallback, &scheduler, false);
+Task updateNoteList(NOTE_LIST_REDRAW_TIME, 8, &updateNoteListCallback, &scheduler, true);
 
 NavigationItem rootNote(0, 0, 11, 0, clearTwoSpaces, &navigation, &notePrinterCallback);
-NavigationItem rootRange(0, 2, 7, 5, clearOneSpace, &navigation, &rangePrinterCallback);
+NavigationItem rootRange(0, 2, 9, 5, clearOneSpace, &navigation, &rangePrinterCallback);
 NavigationItem rootMode(0, 3, 6, 0, clearOneSpace, &navigation, &modePrinterCallback);
-NavigationItem arpeggiatorModeStep1(0, 5, 5, 1, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
-NavigationItem arpeggiatorDegreeStep1(0, 6, 11, 1, clearTwoSpaces, &navigation, &rangePrinterCallback); 
-
+NavigationItem arpeggiatorModeStep1(0, 4, 5, 1, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
+NavigationItem arpeggiatorDegreeStep1(0, 5, 19, 1, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
+NavigationItem arpeggiatorModeStep2(0, 7, 5, 1, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
+NavigationItem arpeggiatorDegreeStep2(0, 8, 19, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
+NavigationItem arpeggiatorModeStep3(0, 10, 5, 1, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
+NavigationItem arpeggiatorDegreeStep3(0, 11, 19, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
+NavigationItem arpeggiatorModeStep4(0, 13, 5, 1, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
+NavigationItem arpeggiatorDegreeStep4(0, 14, 19, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
 
 /** Print a note name given a value
  *  @param value - the current value
  */
 void notePrinterCallback(int value) {
   lcd.print(noteName[value]);
+  currentNote = value;
+  updateNoteList.restart();
 }
 
 /** Print a mode name given a value
@@ -75,6 +83,8 @@ void notePrinterCallback(int value) {
  */
 void modePrinterCallback(int value) {
   lcd.print(modeName[value]);
+  currentMode = value;
+  updateNoteList.restart();
 }
 
 /** Print an arpeggiator mode
@@ -89,6 +99,17 @@ void arpeggiatorModePrinterCallback(int value) {
  */
 void rangePrinterCallback(int value) {
   lcd.print(value);
+}
+
+
+void modeDegreePrinterCallback(int value) {
+  if(value == 0) {
+    lcd.print("--");
+  } else if(value < 8) {
+    lcd.print(value);
+  } else {
+    lcd.print(noteName[value - 8]);
+  }
 }
 
 /** Indicate that clocks are being received by flashing on the downbeat
@@ -178,6 +199,15 @@ void previousEditableDebounceCallback() {
     previousEditable.restart();
     previousEditableDebounce.disable();
   }
+}
+
+/** Update the valid note list on the editor screen
+ */
+void updateNoteListCallback() {
+  lcd.setCursor((updateNoteList.getRunCounter()) * 2, 1);
+  lcd.print(clearTwoSpaces);
+  lcd.setCursor((updateNoteList.getRunCounter()) * 2, 1);
+  lcd.print(noteName[(modeFormula[((updateNoteList.getRunCounter()-1) + currentMode) % 12] + currentNote) % 12]);
 }
 
 /** Clock handler

@@ -47,6 +47,7 @@ SOFTWARE. */
   #define ENCODER_DEBOUNCE_TIME 9000
   #define UPDATE_EDITABLE_TIME 140000
   #define NAV_POLL_TIME 30000
+  #define NOTE_LIST_REDRAW_TIME 20000
   #define DEFAULT_NOTE_NUMBER 69
 
   #define LCD_CHAR_ROOT_INVERTED 0
@@ -68,12 +69,6 @@ SOFTWARE. */
   #define NOTE_Gb 78
   #define NOTE_G 79
   #define NOTE_Ab 80
-
-  #define OCTAVE_OFFSET_2 45
-  #define OCTAVE_OFFSET_3 57
-  #define OCTAVE_OFFSET_4 69
-  #define OCTAVE_OFFSET_5 81
-  #define OCTAVE_OFFSET_6 93
 
   //Channel for program NRPN data
   #define PROGRAM_CHANNEL_NRPN 1
@@ -126,13 +121,6 @@ SOFTWARE. */
   #define MODE_CHAR_MIXOLYDIAN "X"
   #define MODE_CHAR_LOCRIAN "O"  
 
-  //The Prophet '08 only has 8 voices, limiting the arp to 8 note events
-  const int major[] = {0, 3, 6, 12, 15, 18, 24, 27};
-  const int minor[] = {0, 2, 6, 12, 14, 18, 24, 26};
-  const int majorSeven[] = {0, 3, 6, 8, 12, 15, 18, 20};
-  const int minorSeven[] = {0, 2, 6, 8, 12, 16, 18, 20};
-  const int octaveInterval[] = {0, 12};
-  
   Scheduler scheduler;
   Navigation navigation;
   MIDI_CREATE_INSTANCE(HardwareSerial, Serial,  midi1);
@@ -160,19 +148,25 @@ SOFTWARE. */
   void nextEditableDebounceCallback();
   void previousEditableCallback();
   void previousEditableDebounceCallback();
+  void updateNoteListCallback();
 
   void notePrinterCallback(int value);
   void modePrinterCallback(int value);
   void arpeggiatorModePrinterCallback(int value);
   void rangePrinterCallback(int value);
+  void modeDegreePrinterCallback(int value);
   
   int clocks = 1;
   int quarterNotes = 0;
-  volatile int noteNumber = DEFAULT_NOTE_NUMBER;
   char clearOneSpace[] = " "; 
   char clearTwoSpaces[] = "  ";
-  const char* noteName[] = {NOTE_CHAR_A, NOTE_CHAR_Bb, NOTE_CHAR_B, NOTE_CHAR_C, NOTE_CHAR_Db, NOTE_CHAR_D, NOTE_CHAR_Eb, NOTE_CHAR_E, NOTE_CHAR_F, NOTE_CHAR_Gb, NOTE_CHAR_G, NOTE_CHAR_Ab};
-  const char* modeName[] = {MODE_CHAR_MAJOR, MODE_CHAR_MINOR, MODE_CHAR_DORIAN, MODE_CHAR_PHRYGIAN, MODE_CHAR_LYDIAN, MODE_CHAR_MIXOLYDIAN, MODE_CHAR_LOCRIAN};
+  const char* noteName[] = {NOTE_CHAR_C, NOTE_CHAR_Db, NOTE_CHAR_D, NOTE_CHAR_Eb, NOTE_CHAR_E, NOTE_CHAR_F, NOTE_CHAR_Gb, NOTE_CHAR_G, NOTE_CHAR_Ab, NOTE_CHAR_A, NOTE_CHAR_Bb, NOTE_CHAR_B};
+  const char* modeName[] = {MODE_CHAR_MAJOR, MODE_CHAR_DORIAN, MODE_CHAR_PHRYGIAN, MODE_CHAR_LYDIAN, MODE_CHAR_MIXOLYDIAN, MODE_CHAR_MINOR, MODE_CHAR_LOCRIAN};
+  const int modeFormula[] = {0, 2, 4, 5, 7, 9, 11};
+
+  int i = 0;
+  int currentNote = 0;
+  int currentMode = 0;
   
   //LCD Icons
   byte rootInverted[8] = {
