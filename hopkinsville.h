@@ -50,13 +50,12 @@ SOFTWARE. */
   #define NOTE_LIST_REDRAW_TIME 20000
   #define DEFAULT_NOTE_NUMBER 69
 
-  #define LCD_CHAR_ROOT_INVERTED 0
-  #define LCD_CHAR_DRONE_INVERTED 1
-  #define LCD_CHAR_UP_ARROW_INVERTED 2
-  #define LCD_CHAR_DOWN_ARROW_INVERTED 3
-  #define LCD_CHAR_UP_DOWN_ARROW_INVERTED 4
-  #define LCD_CHAR_OCTAVE 5
-  #define LCD_CHAR_BANK 6  
+  #define LCD_CHAR_DRONE_INVERTED 0
+  #define LCD_CHAR_UP_ARROW_INVERTED 1
+  #define LCD_CHAR_DOWN_ARROW_INVERTED 2
+  #define LCD_CHAR_UP_DOWN_ARROW_INVERTED 3
+  #define LCD_CHAR_OCTAVE 4
+  #define LCD_CHAR_BANK 5
   #define NOTE_A 69
   #define NOTE_Bb 70
   #define NOTE_B 71
@@ -150,36 +149,26 @@ SOFTWARE. */
   void previousEditableDebounceCallback();
   void updateNoteListCallback();
 
-  void notePrinterCallback(int value);
-  void modePrinterCallback(int value);
-  void arpeggiatorModePrinterCallback(int value);
-  void rangePrinterCallback(int value);
-  void modeDegreePrinterCallback(int value);
+  void notePrinterCallback(uint8_t value);
+  void modePrinterCallback(uint8_t value);
+  void arpeggiatorModePrinterCallback(uint8_t value);
+  void rangePrinterCallback(uint8_t value);
+  void modeDegreePrinterCallback(uint8_t value);
   
-  int clocks = 1;
-  int quarterNotes = 0;
   char clearOneSpace[] = " "; 
   char clearTwoSpaces[] = "  ";
   const char* noteName[] = {NOTE_CHAR_C, NOTE_CHAR_Db, NOTE_CHAR_D, NOTE_CHAR_Eb, NOTE_CHAR_E, NOTE_CHAR_F, NOTE_CHAR_Gb, NOTE_CHAR_G, NOTE_CHAR_Ab, NOTE_CHAR_A, NOTE_CHAR_Bb, NOTE_CHAR_B};
   const char* modeName[] = {MODE_CHAR_MAJOR, MODE_CHAR_DORIAN, MODE_CHAR_PHRYGIAN, MODE_CHAR_LYDIAN, MODE_CHAR_MIXOLYDIAN, MODE_CHAR_MINOR, MODE_CHAR_LOCRIAN};
-  const int modeFormula[] = {2, 2, 1, 2, 2, 2, 1};
+  const uint8_t modeFormula[] = {2, 2, 1, 2, 2, 2, 1};
 
-  int i = 0;
-  int currentNote = 0;
-  int currentMode = 0;
-  int relativePitch = 0;
+  uint8_t clocks = 1;
+  uint8_t quarterNotes = 0;
+  uint8_t i = 0;
+  uint8_t rootNote = 0;
+  uint8_t currentMode = 0;
+  uint8_t relativePitch = 0;
   
   //LCD Icons
-  byte rootInverted[8] = {
-    B11111,
-    B10011,
-    B10101,
-    B10101,
-    B10011,
-    B10101,
-    B10101,
-    B11111
-  };
   byte droneInverted[8] = {
     B11111,
     B10011,
@@ -276,7 +265,6 @@ SOFTWARE. */
   void initLcd() {
     lcd.begin();
     lcd.backlight();
-    lcd.createChar(LCD_CHAR_ROOT_INVERTED, rootInverted);
     lcd.createChar(LCD_CHAR_DRONE_INVERTED, droneInverted);
     lcd.createChar(LCD_CHAR_UP_ARROW_INVERTED, upArrowInverted);
     lcd.createChar(LCD_CHAR_DOWN_ARROW_INVERTED, downArrowInverted);

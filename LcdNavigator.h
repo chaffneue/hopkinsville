@@ -8,7 +8,7 @@
     friend class Navigation;
 
     public:
-      NavigationItem(int lcdRow, int lcdColumn, int rangeMax, int value, char* clearChar, Navigation* navigation, void (*lcdPrinterCallback)(int));
+      NavigationItem(uint8_t lcdRow, uint8_t lcdColumn, uint8_t rangeMax, uint8_t value, char* clearChar, Navigation* navigation, void (*lcdPrinterCallback)(uint8_t));
       
       void setNextNavigationItem(NavigationItem* next);
       void setPreviousNavigationItem(NavigationItem* previous);
@@ -18,9 +18,9 @@
     private:
       Navigation *navigation;
       NavigationItem *previous, *next;
-      int lcdRow, lcdColumn, value, rangeMax;
+      uint8_t lcdRow, lcdColumn, value, rangeMax;
       char *clearChar;
-      void (*lcdPrinterCallback)(int);
+      void (*lcdPrinterCallback)(uint8_t);
   };
 
   class Navigation {

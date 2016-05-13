@@ -8,7 +8,7 @@
  *  @param clearChar - the clear character(s) to use when in edit mode
  *  @param navigation - the navigation context
  */
-NavigationItem::NavigationItem(int lcdRow, int lcdColumn, int rangeMax, int value, char* clearChar, Navigation* navigation, void (*lcdPrinterCallback)(int)) {
+NavigationItem::NavigationItem(uint8_t lcdRow, uint8_t lcdColumn, uint8_t rangeMax, uint8_t value, char* clearChar, Navigation* navigation, void (*lcdPrinterCallback)(uint8_t)) {
   navigation->addNavigationItem(*this);
   
   this->lcdRow = lcdRow;
