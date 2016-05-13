@@ -162,11 +162,12 @@ SOFTWARE. */
   char clearTwoSpaces[] = "  ";
   const char* noteName[] = {NOTE_CHAR_C, NOTE_CHAR_Db, NOTE_CHAR_D, NOTE_CHAR_Eb, NOTE_CHAR_E, NOTE_CHAR_F, NOTE_CHAR_Gb, NOTE_CHAR_G, NOTE_CHAR_Ab, NOTE_CHAR_A, NOTE_CHAR_Bb, NOTE_CHAR_B};
   const char* modeName[] = {MODE_CHAR_MAJOR, MODE_CHAR_DORIAN, MODE_CHAR_PHRYGIAN, MODE_CHAR_LYDIAN, MODE_CHAR_MIXOLYDIAN, MODE_CHAR_MINOR, MODE_CHAR_LOCRIAN};
-  const int modeFormula[] = {0, 2, 4, 5, 7, 9, 11};
+  const int modeFormula[] = {2, 2, 1, 2, 2, 2, 1};
 
   int i = 0;
   int currentNote = 0;
   int currentMode = 0;
+  int relativePitch = 0;
   
   //LCD Icons
   byte rootInverted[8] = {

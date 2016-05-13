@@ -204,10 +204,18 @@ void previousEditableDebounceCallback() {
 /** Update the valid note list on the editor screen
  */
 void updateNoteListCallback() {
+  relativePitch = 0;
+  
+  if(!updateNoteList.isFirstIteration()) { 
+    for (i = 0; i < updateNoteList.getRunCounter() - 1; i++) {
+      relativePitch +=  modeFormula[(i + currentMode) % 7];
+    }
+  }
+  
   lcd.setCursor((updateNoteList.getRunCounter()) * 2, 1);
   lcd.print(clearTwoSpaces);
   lcd.setCursor((updateNoteList.getRunCounter()) * 2, 1);
-  lcd.print(noteName[(modeFormula[((updateNoteList.getRunCounter()-1) + currentMode) % 12] + currentNote) % 12]);
+  lcd.print(noteName[(currentNote + relativePitch) % 12]);
 }
 
 /** Clock handler
