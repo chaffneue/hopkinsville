@@ -61,13 +61,13 @@ NavigationItem root(0, 0, 11, 0, clearTwoSpaces, &navigation, &notePrinterCallba
 NavigationItem rootRange(0, 2, 9, 5, clearOneSpace, &navigation, &rangePrinterCallback);
 NavigationItem rootMode(0, 3, 6, 0, clearOneSpace, &navigation, &modePrinterCallback);
 NavigationItem arpeggiatorModeStep1(0, 4, 4, 0, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
-NavigationItem arpeggiatorDegreeStep1(0, 5, 19, 1, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
+NavigationItem arpeggiatorDegreeStep1(0, 5, 33, 1, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
 NavigationItem arpeggiatorModeStep2(0, 7, 4, 0, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
-NavigationItem arpeggiatorDegreeStep2(0, 8, 19, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
+NavigationItem arpeggiatorDegreeStep2(0, 8, 33, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
 NavigationItem arpeggiatorModeStep3(0, 10, 4, 0, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
-NavigationItem arpeggiatorDegreeStep3(0, 11, 19, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
+NavigationItem arpeggiatorDegreeStep3(0, 11, 33, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
 NavigationItem arpeggiatorModeStep4(0, 13, 4, 0, clearOneSpace, &navigation, &arpeggiatorModePrinterCallback);
-NavigationItem arpeggiatorDegreeStep4(0, 14, 19, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
+NavigationItem arpeggiatorDegreeStep4(0, 14, 33, 0, clearTwoSpaces, &navigation, &modeDegreePrinterCallback);
 
 /** Print a note name given a value
  *  @param value - the current value
@@ -78,7 +78,7 @@ void notePrinterCallback(uint8_t value) {
   updateNoteList.restart();
 }
 
-/** Print a mode name given a value
+/** Print a mode tonality name given a value
  *  @param value - the current value
  */
 void modePrinterCallback(uint8_t value) {
@@ -87,31 +87,46 @@ void modePrinterCallback(uint8_t value) {
   updateNoteList.restart();
 }
 
-/** Print an arpeggiator mode
- *  @param value - the current value
- */
-void arpeggiatorModePrinterCallback(uint8_t value) {
-  lcd.write(value);
-}
-
-/** Print an arpeggiator mode
+/** Print a number value
  *  @param value - the current value
  */
 void rangePrinterCallback(uint8_t value) {
   lcd.print(value);
 }
 
+/** Print an arpeggiator mode
+ *  mode 0 Drone first note until clock signal stops
+ *  mode 1 Arpeggiator up 
+ *  mode 2 Arpeggiator down
+ *  mode 3 Arpeggiator up/down
+ *  mode 4 Octave down/up
+ *  @param value - the current value
+ */
+void arpeggiatorModePrinterCallback(uint8_t value) {
+  lcd.write(value);
+}
 
+/** Print the chord degree mode
+ *  mode 0 -- no note value/rest
+ *  mode 1 1-7 normal triad plus octave
+ *  mode 2 8-15 Add seven 
+ *  mode 3 16-22 Add nine 
+ *  mode 4 play single note - useful for gated sequencer root notes
+ *  @param value - the current value
+ */
 void modeDegreePrinterCallback(uint8_t value) {
   if(value == 0) {
     lcd.print("--");
   } else if(value < 8) {
     lcd.print(value);
-  } else if(value >= 8  && value < 16){
-    lcd.print(value - 8);
+  } else if(value >= 8  && value < 15){
+    lcd.print(value - 7);
     lcd.print(7);
+  } else if(value >= 15 && value < 22) {
+    lcd.print(value - 14);
+    lcd.print(9);
   } else { 
-    lcd.print(noteName[value - 16]);
+    lcd.print(noteName[value - 22]);
   }
 }
 

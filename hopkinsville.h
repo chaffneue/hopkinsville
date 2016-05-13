@@ -133,8 +133,7 @@ SOFTWARE. */
   Input<PREVIOUS_PIN> previousPin;
   Input<WRITE_PIN> writePin;
   Input<AUDITION_PIN> auditionPin;
-  int interruptPin = digitalPinToInterrupt(ENCODER_CLK_PIN);
-  
+ 
   //forward declarations
   void handleMidiClock();
   void downbeatFlashCallback();
@@ -160,6 +159,7 @@ SOFTWARE. */
   const char* noteName[] = {NOTE_CHAR_C, NOTE_CHAR_Db, NOTE_CHAR_D, NOTE_CHAR_Eb, NOTE_CHAR_E, NOTE_CHAR_F, NOTE_CHAR_Gb, NOTE_CHAR_G, NOTE_CHAR_Ab, NOTE_CHAR_A, NOTE_CHAR_Bb, NOTE_CHAR_B};
   const char* modeName[] = {MODE_CHAR_MAJOR, MODE_CHAR_DORIAN, MODE_CHAR_PHRYGIAN, MODE_CHAR_LYDIAN, MODE_CHAR_MIXOLYDIAN, MODE_CHAR_MINOR, MODE_CHAR_LOCRIAN};
   const uint8_t modeFormula[] = {2, 2, 1, 2, 2, 2, 1};
+  const uint8_t interruptPin = digitalPinToInterrupt(ENCODER_CLK_PIN);
 
   uint8_t clocks = 1;
   uint8_t quarterNotes = 0;
@@ -229,6 +229,7 @@ SOFTWARE. */
     B10001,
     B11111    
   };
+  
   /** Midi Start Handler
    */
   void handleMidiStart() {
